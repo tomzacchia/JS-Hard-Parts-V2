@@ -93,7 +93,18 @@ const onceFunc = once(addByTwo);
 // console.log(onceFunc(9001)); // => should log 6
 
 // CHALLENGE 5
-function after(count, func) {}
+function after(thresholdCount, func) {
+  let counter = 1;
+
+  return function afterCalled() {
+    if (counter >= thresholdCount) {
+      func();
+    } else {
+      console.log("nothing");
+      counter += 1;
+    }
+  };
+}
 
 // /*** Uncomment these to check your work! ***/
 // const called = function() { console.log('hello') };
@@ -116,7 +127,21 @@ function rollCall(names) {}
 // rollCaller() // => should log 'Everyone accounted for'
 
 // CHALLENGE 8
-function saveOutput(func, magicWord) {}
+function saveOutput(func, magicWord) {
+  let logObj = {};
+
+  return function funcWrapper(input) {
+    if (typeof input === "string" && input === magicWord) {
+      return logObj;
+    }
+
+    const result = func(input);
+
+    logObj[input] = result;
+
+    return result;
+  };
+}
 
 // /*** Uncomment these to check your work! ***/
 // const multiplyBy2 = function(num) { return num * 2; };
