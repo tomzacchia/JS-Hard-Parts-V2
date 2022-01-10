@@ -1,12 +1,20 @@
 // CHALLENGE 1
-function createFunction() {}
+function createFunction() {
+  return function printHello() {
+    console.log("hello");
+  };
+}
 
 // /*** Uncomment these to check your work! ***/
 // const function1 = createFunction();
 // function1(); // => should console.log('hello');
 
 // CHALLENGE 2
-function createFunctionPrinter(input) {}
+function createFunctionPrinter(input) {
+  return function printInput() {
+    console.log(input);
+  };
+}
 
 // /*** Uncomment these to check your work! ***/
 // const printSample = createFunctionPrinter('sample');
@@ -31,17 +39,24 @@ const jasCounter = outer();
 // Before your do, guess what will be logged from each function call.
 
 // /*** Uncomment these to check your work! ***/
-// willCounter();
-// willCounter();
-// willCounter();
+// willCounter(); // 1
+// willCounter(); // 2
+// willCounter(); // 3
 
-// jasCounter();
-// willCounter();
+// jasCounter(); // 1
+// willCounter(); // 4
 
-function addByX(x) {}
+function addByX(x) {
+  const constant = x;
+  return function addConstantToInput(input) {
+    const sum = input + constant;
+    console.log(sum);
+    return sum;
+  };
+}
 
 // /*** Uncomment these to check your work! ***/
-// const addByTwo = addByX(2);
+const addByTwo = addByX(2);
 // addByTwo(1); // => should return 3
 // addByTwo(2); // => should return 4
 // addByTwo(3); // => should return 5
@@ -55,13 +70,27 @@ function addByX(x) {}
 // addByFour(5); // => should return 9
 
 // CHALLENGE 4
-function once(func) {}
+function once(func) {
+  let hasBeenCalled = false;
+  let result;
+
+  return function funcOnceWrapper(input) {
+    if (!hasBeenCalled) {
+      hasBeenCalled = true;
+      result = func(input);
+      return result;
+    }
+
+    return result;
+  };
+}
 
 // /*** Uncomment these to check your work! ***/
-// const onceFunc = once(addByTwo);
-// console.log(onceFunc(4));  // => should log 6
-// console.log(onceFunc(10));  // => should log 6
-// console.log(onceFunc(9001));  // => should log 6
+// once returns a function
+const onceFunc = once(addByTwo);
+// console.log(onceFunc(4)); // => should log 6
+// console.log(onceFunc(10)); // => should log 6
+// console.log(onceFunc(9001)); // => should log 6
 
 // CHALLENGE 5
 function after(count, func) {}
