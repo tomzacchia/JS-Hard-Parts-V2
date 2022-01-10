@@ -98,16 +98,44 @@ function addOneToNumberFrequency(accumulator, element) {
   return accumulator;
 }
 
-console.log(
-  intersection([5, 10, 15, 20], [15, 88, 1, 5, 7], [1, 10, 15, 5, 20])
-);
+// console.log(
+//   intersection([5, 10, 15, 20], [15, 88, 1, 5, 7], [1, 10, 15, 5, 20])
+// );
 // should log: [5, 15]
 
 // Challenge 8
-function union(arrays) {}
+function union() {
+  const arrays = [...arguments];
+  let uniqueNumbersArray = [];
 
-// console.log(union([5, 10, 15], [15, 88, 1, 5, 7], [100, 15, 10, 1, 5]));
-// should log: [5, 10, 15, 88, 1, 7, 100]
+  arrays.forEach((array) => {
+    uniqueNumbersArray = reduce(array, addUniqueNumbersToArray, [
+      ...uniqueNumbersArray,
+    ]);
+  });
+
+  return uniqueNumbersArray;
+}
+
+function addUniqueNumbersToArray(uniqueNumbersArray, number) {
+  let shouldNumberBeAdded = true;
+
+  // accumulator length = 0, number is unique by default
+  if (uniqueNumbersArray.length === 0) {
+    return [...uniqueNumbersArray.concat(number)];
+  } else {
+    uniqueNumbersArray.forEach((uniqueNumber) => {
+      if (uniqueNumber === number) shouldNumberBeAdded = false;
+    });
+  }
+
+  if (shouldNumberBeAdded) uniqueNumbersArray.push(number);
+
+  return [...uniqueNumbersArray];
+}
+
+console.log(union([5, 10, 15], [15, 88, 1, 5, 7], [100, 15, 10, 1, 5]));
+// should log: [5, 10, 15, 88, 1, 7, 100]`
 
 // Challenge 9
 function objOfMatches(array1, array2, callback) {}
