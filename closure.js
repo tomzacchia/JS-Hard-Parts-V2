@@ -117,7 +117,19 @@ function after(thresholdCount, func) {
 function delay(func, wait) {}
 
 // CHALLENGE 7
-function rollCall(names) {}
+function rollCall(names) {
+  let index = 0;
+
+  return function () {
+    if (index <= names.length - 1) {
+      const currentName = names[index];
+      index++;
+      console.log(currentName);
+    } else {
+      console.log("Everyone accounted for");
+    }
+  };
+}
 
 // /*** Uncomment these to check your work! ***/
 // const rollCaller = rollCall(['Victoria', 'Juan', 'Ruth'])
@@ -130,7 +142,7 @@ function rollCall(names) {}
 function saveOutput(func, magicWord) {
   let logObj = {};
 
-  return function funcWrapper(input) {
+  return function (input) {
     if (typeof input === "string" && input === magicWord) {
       return logObj;
     }
@@ -151,7 +163,19 @@ function saveOutput(func, magicWord) {
 // console.log(multBy2AndLog('boo')); // => should log { 2: 4, 9: 18 }
 
 // CHALLENGE 9
-function cycleIterator(array) {}
+function cycleIterator(array) {
+  let index = 0;
+
+  return function () {
+    const currentElement = array[index];
+    if (index === array.length - 1) {
+      index = 0;
+    } else {
+      index++;
+    }
+    return currentElement;
+  };
+}
 
 // /*** Uncomment these to check your work! ***/
 // const threeDayWeekend = ['Fri', 'Sat', 'Sun'];
@@ -162,7 +186,11 @@ function cycleIterator(array) {}
 // console.log(getDay()); // => should log 'Fri'
 
 // CHALLENGE 10
-function defineFirstArg(func, arg) {}
+function defineFirstArg(func, arg) {
+  return function (input) {
+    return func(arg, input);
+  };
+}
 
 // /*** Uncomment these to check your work! ***/
 // const subtract = function(big, small) { return big - small; };
@@ -170,7 +198,18 @@ function defineFirstArg(func, arg) {}
 // console.log(subFrom20(5)); // => should log 15
 
 // CHALLENGE 11
-function dateStamp(func) {}
+function dateStamp(func) {
+  const today = new Date();
+  const dd = String(today.getDate());
+  const mm = String(today.getMonth() + 1);
+  const yyyy = String(today.getFullYear());
+
+  const todayDDMMYYYY = `${dd} / ${mm} / ${yyyy}`;
+
+  return function (input) {
+    return { date: todayDDMMYYYY, output: func(input) };
+  };
+}
 
 // /*** Uncomment these to check your work! ***/
 // const stampedMultBy2 = dateStamp(n => n * 2);
@@ -258,7 +297,34 @@ function makeHistory(limit) {}
 // console.log(myActions('undo')); // => should log 'nothing to undo'
 
 // CHALLENGE 19
-function blackjack(array) {}
+function blackjack(array) {
+  return function dealer(number1, number2) {
+    let arrayIndex = 0;
+    let currentPlayerTotal = number1 + number2;
+    let hasPlayerBuster = false;
+    let isFirstDeal = true;
+
+    return function player() {
+      if (isFirstDeal) {
+        isFirstDeal = false;
+        return currentPlayerTotal;
+      }
+
+      if (currentPlayerTotal > 21) return "you are done!";
+
+      currentPlayerTotal += array[arrayIndex];
+      arrayIndex++;
+
+      if (currentPlayerTotal > 21) hasPlayerBuster = true;
+
+      if (!hasPlayerBuster) {
+        return currentPlayerTotal;
+      } else {
+        return "bust";
+      }
+    };
+  };
+}
 
 // /*** Uncomment these to check your work! ***/
 
